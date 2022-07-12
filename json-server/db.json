@@ -1,0 +1,46 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "title": "Kris",
+      "dateStart": "2020-01-29T17:18:01.123Z",
+      "dateEnd": "2020-01-29T17:18:01.123Z"
+    },
+    {
+      "title": "Isabella.Kulas14",
+      "dateStart": "2021-10-15T20:29:15.304Z",
+      "dateEnd": "2021-10-14T23:36:11.427Z",
+      "id": 2
+    },
+    {
+      "title": "Linnea_Lehner41",
+      "dateStart": "2022-01-14T19:51:08.145Z",
+      "dateEnd": "2021-12-05T19:51:46.153Z",
+      "id": 3
+    },
+    {
+      "title": "Drew35",
+      "dateStart": "2021-12-25T12:19:53.262Z",
+      "dateEnd": "2021-08-18T21:47:52.392Z",
+      "id": 5
+    },
+    {
+      "title": "Laney.Breitenberg",
+      "dateStart": "2021-10-29T23:23:42.527Z",
+      "dateEnd": "2021-08-14T17:48:19.305Z",
+      "id": 6
+    },
+    {
+      "title": "Jeramie_Beatty1",
+      "dateStart": "2022-03-11T02:12:17.479Z",
+      "dateEnd": "2022-02-09T07:40:54.845Z",
+      "id": 7
+    },
+    {
+      "title": "Cristian20",
+      "dateStart": "2022-02-02T10:57:00.392Z",
+      "dateEnd": "2022-01-02T05:45:25.488Z",
+      "id": 8
+    }
+  ]
+}
