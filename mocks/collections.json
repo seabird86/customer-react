@@ -1,0 +1,6 @@
+[
+  {
+    "id": "base",
+    "routes": ["intercepter:*","GET:customers:*","GET:customer:*","POST:customer:*","DELETE:customer:*"]
+  }
+]

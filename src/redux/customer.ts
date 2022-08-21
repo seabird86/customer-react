@@ -33,7 +33,7 @@ const initialState: CustomerState = {
 export const getCustomer = createAsyncThunk(
     'customer/get',
     async (id) => {
-        const response = await axios.get('http://localhost:3001/customers');
+        const response = await axios.get('http://localhost:3100/customers/${id}');
         return {customers: response.data};
     }
 );
@@ -41,15 +41,15 @@ export const getCustomer = createAsyncThunk(
 export const getCustomers = createAsyncThunk(
     'customer/getAll',
     async () => {
-        const response = await axios.get('http://localhost:3001/customers');
+        const response = await axios.get('http://localhost:3100/customers');
         return {customers: response.data};
     }
 );
 
 export const createCustomer = createAsyncThunk<any,any>(
-    'customer/getAll',
+    'customer/create',
     async (payload,{dispatch}) => { // getState, rejectWithValue(value, [meta]), fulfillWithValue(value, meta):
-        await axios.post('http://localhost:3001/customers',{
+        await axios.post('http://localhost:3100/customers',{
             id: payload.id,
             title: faker.internet.userName(),
             dateStart: faker.date.past(),
@@ -62,7 +62,7 @@ export const createCustomer = createAsyncThunk<any,any>(
 export const deleteCustomer = createAsyncThunk<any,any>(
     'customer/delete',
     async (id,{dispatch}) => {
-        await axios.delete(`http://localhost:3001/customers/${id}`);
+        await axios.delete(`http://localhost:3100/customers/${id}`);
         dispatch(getCustomers());
     }
 );
@@ -119,12 +119,13 @@ const userSlice = createSlice({
         },
     }
 });
+export const { getCustomerSync } = userSlice.actions;
+
+// SELECTOR
 
 export const selectCustomerState = (rootState: RootState) => rootState.customer;
 export const selectCustomers = (rootState: RootState) => {
     const state = selectCustomerState(rootState);
     return state.allIds.map(id=> state.byIds[id]);
 }
-
-export const { getCustomerSync } = userSlice.actions;
 export default userSlice.reducer;
