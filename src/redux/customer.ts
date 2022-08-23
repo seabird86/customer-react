@@ -129,3 +129,32 @@ export const selectCustomers = (rootState: RootState) => {
     return state.allIds.map(id=> state.byIds[id]);
 }
 export default userSlice.reducer;
+
+
+// export const getById = createAsyncThunk(
+//     'user/getId_request',
+//     async (id) => {
+//         const response = await fetch('http://localhost:3001/events');
+//         const events = await response.json();
+//         return { events };
+//     }
+// );
+// export const getByIdSync = createAction(
+//     'user/getIdSync_request',
+//     (id) => {
+//       return { payload: { id: id } };
+//     }
+//   );
+// const userEventsReducer = createReducer(initialState, {
+//     [getByIdSync.type]: (state:UserEventsState, action:AnyAction) => {
+//         // change state
+//     },
+//     [getById.pending.type]: (state:UserEventsState, action:AnyAction) => {
+//     },
+//     [getById.fulfilled.type]: (state:UserEventsState, action:AnyAction) => {
+//         // change state
+//     },
+//     [getById.rejected.type]: (state:UserEventsState, action:AnyAction) => {
+//     },
+// });
+// export default userEventsReducer;
