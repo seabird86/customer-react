@@ -82,7 +82,7 @@ const userSlice = createSlice({
             },
         }
     },
-    extraReducers: {        
+    extraReducers: {
         [getCustomer.pending.type]: (state:CustomerState, action:AnyAction) => {
             state.loading = true;
         },
