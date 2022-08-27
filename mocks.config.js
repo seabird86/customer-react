@@ -42,7 +42,7 @@ module.exports = {
   mock: {
     routes: {
       // Global delay to apply to routes
-      //delay: 0,
+      delay: 3000,
     },
     collections: {
       // Selected collection

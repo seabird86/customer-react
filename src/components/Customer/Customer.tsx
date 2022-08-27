@@ -1,36 +1,34 @@
-import React, { useEffect } from 'react';
-import {connect, ConnectedProps} from 'react-redux';
-import { selectCustomers, getCustomers, createCustomer, deleteCustomer, Customer} from '../../redux/customer';
+import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
+import { Button, Space, Table, Tooltip } from 'antd';
+import type { ColumnsType, TableProps } from 'antd/es/table';
+import { useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { createCustomer, deleteCustomer, getCustomers } from '../../redux/customer/CustomerSearchRedux';
+import { Customer } from '../../redux/entity/CustomerEntity';
 import { RootState } from '../../redux/store';
-import {Table,Button, Space, Tooltip} from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { PlusOutlined , DeleteOutlined, EyeOutlined} from '@ant-design/icons';
 
 const connector = connect( (state:RootState) => ({
-  customers: selectCustomers(state)
+  ...state.customerSearch
 }), {
   getCustomers,
   createCustomer,
-  deleteCustomer
+  deleteCustomer,
 });
-type PropsFromRedux = ConnectedProps<typeof connector>;
-interface Props extends PropsFromRedux {}
-
-const CustomerComponent:React.FC<Props> = ({customers, getCustomers, createCustomer, deleteCustomer}) =>{
-
+interface Props extends ConnectedProps<typeof connector> {}
+export default connector(({ customersRes, getCustomers,createCustomer,deleteCustomer}:Props) =>{
   useEffect(()=>{
-    getCustomers();
+    getCustomers({params:{page:1, pageSize:2}});
   },[]);
 
-  const onCreate = () => {    
-    createCustomer(customers[customers.length-1].id+1);
+  const onCreate = () => {
+    createCustomer((customersRes?.customers[(customersRes?.customers?.length-1)]?.id ?? 0) + 1);
   }
 
   const onDelete = (rec:Customer) => {    
     deleteCustomer(rec.id);
   }
 
-  const onView = () => {    
+  const onView = () => {
     // deleteCustomer(customers[customers.length-1].id+1);
   }
 
@@ -48,9 +46,9 @@ const CustomerComponent:React.FC<Props> = ({customers, getCustomers, createCusto
       key: 'id'
     },
     {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
+      title: 'First Name',
+      dataIndex: 'firstName',
+      key: 'firstName',
     },
     {
       title: 'Start Date',
@@ -86,15 +84,17 @@ const CustomerComponent:React.FC<Props> = ({customers, getCustomers, createCusto
     },
   ];
 
+  const onChangeTable: TableProps<DataType>['onChange'] = (pagination,filters,sorter) => {
+    getCustomers({params:{page:pagination.current, pageSize: pagination.pageSize}});
+  };
+  
+
   return (
     <>
       <Button onClick={onCreate} type="primary" style={{ marginBottom: 16 }} icon={<PlusOutlined />}>
         Add
       </Button>
-    
-      <Table columns={columns} dataSource={customers} rowKey={record => record.id}/>
+      <Table columns={columns} dataSource={customersRes?.customers} rowKey={record => record.id} onChange={onChangeTable} pagination={customersRes?.pagination}/>
     </>
   );
-}
-
-export default connector(CustomerComponent);
+});

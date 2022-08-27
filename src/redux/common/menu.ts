@@ -5,20 +5,13 @@ import axios from 'axios';
 export interface MenuItem{
     id : number;
     title: string;
-    dateStart: string;
-    dateEnd:string;
 }
 interface MenuState{
     menuItems: MenuItem[],
-    loading: boolean;
-    error?: string;
-    
 }
 
 const initialState: MenuState = {
     menuItems: [],
-    loading: false,
-    error: undefined,
 }
 
 export const getMenus = createAsyncThunk(
@@ -30,12 +23,7 @@ export const getMenus = createAsyncThunk(
 );
 
 const menuEventsReducer = createReducer(initialState, {
-    [getMenus.pending.type]: (state:MenuState, action:AnyAction) => {
-    },
     [getMenus.fulfilled.type]: (state:MenuState, action:AnyAction) => {
-        // change state
-    },
-    [getMenus.rejected.type]: (state:MenuState, action:AnyAction) => {
     },
 });
 export default menuEventsReducer;
