@@ -6,16 +6,10 @@ import { CustomersRes } from '../entity/CustomerEntity';
 import { DispatchParams } from '../entity/CommonEntity';
 
 export interface State {
-    loading: boolean;
     customersRes?: CustomersRes;
-    error?: string;
 }
 
-const initState: State = {
-    customersRes: undefined,
-    loading: false,
-    error: undefined,
-}
+const initState: State = {}
 
 export const getCustomers = createAsyncThunk<any, DispatchParams>('customer/getAll',
     async ({params}) => {
@@ -24,23 +18,22 @@ export const getCustomers = createAsyncThunk<any, DispatchParams>('customer/getA
     }
 );
 
-export const createCustomer = createAsyncThunk<any, any>('customer/create',
-    async (payload, { dispatch }) => { // getState, rejectWithValue(value, [meta]), fulfillWithValue(value, meta):
+export const createCustomer = createAsyncThunk<any, DispatchParams|undefined>('customer/create',
+    async (payload) => { // , { dispatch } getState, rejectWithValue(value, [meta]), fulfillWithValue(value, meta):
         await axios.post('http://localhost:3100/customers', {
-            id: payload.id,
-            title: faker.internet.userName(),
+            firstName: faker.internet.userName(),
             dateStart: faker.date.past(),
             dateEnd: faker.date.past(),
         });
-        dispatch(getCustomers({}));
+        if (payload) payload.callback();
     }
 );
 
-export const deleteCustomer = createAsyncThunk<any, any>(
+export const deleteCustomer = createAsyncThunk<any, DispatchParams>(
     'customer/delete',
-    async (id, { dispatch }) => {
+    async ({id, callback}, { dispatch }) => {
         await axios.delete(`http://localhost:3100/customers/${id}`);
-        dispatch(getCustomers({}));
+        if (callback) callback();
     }
 );
 
@@ -48,7 +41,6 @@ export default createReducer(initState, {
     [getCustomers.pending.type]: pending,
     [getCustomers.rejected.type]: rejected,
     [getCustomers.fulfilled.type]: (state: State, action: { payload: CustomersRes }) => {
-        state.loading = false;
         state.customersRes = action.payload;
     }
 });

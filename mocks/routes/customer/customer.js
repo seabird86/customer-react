@@ -32,7 +32,7 @@ module.exports = [
           middleware: (req, res) => {
             const page = +req.query.page || 1;
             const size = +req.query.pageSize || 5;
-            const customers = CUSTOMERS.filter((e,i)=> (page-1)*size <= i && i < Math.min(page*size, CUSTOMERS.length));
+            const customers = Array.from(CUSTOMERS).reverse().filter((e,i)=> (page-1)*size <= i && i < Math.min(page*size, CUSTOMERS.length));
             res.status(200).send({customers, pagination: {page:page, pageSize: size, total: CUSTOMERS.length}});
           },
         },

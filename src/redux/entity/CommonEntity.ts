@@ -9,10 +9,9 @@ export interface DispatchParams {
         sorter?: any;
     };
     body?:any;
-    path?:{
-        [key: string]: any;
-    }
-
+    callback?: any;
+    [key: string]: any;
+    
 }
 
 export interface Pagination extends TablePaginationConfig {

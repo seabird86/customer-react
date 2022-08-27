@@ -1,6 +1,6 @@
 import { DeleteOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tooltip } from 'antd';
-import type { ColumnsType, TableProps } from 'antd/es/table';
+import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { createCustomer, deleteCustomer, getCustomers } from '../../redux/customer/CustomerSearchRedux';
@@ -20,12 +20,16 @@ export default connector(({ customersRes, getCustomers,createCustomer,deleteCust
     getCustomers({params:{page:1, pageSize:2}});
   },[]);
 
+  const onChangeTable = (pagination: TablePaginationConfig) => {
+    getCustomers({params:{page:pagination.current, pageSize: pagination.pageSize}});
+  };
+
   const onCreate = () => {
-    createCustomer((customersRes?.customers[(customersRes?.customers?.length-1)]?.id ?? 0) + 1);
+    createCustomer({callback: ()=> onChangeTable(customersRes?.pagination ?? {})});
   }
 
   const onDelete = (rec:Customer) => {    
-    deleteCustomer(rec.id);
+    deleteCustomer({id:rec.id, callback: ()=> onChangeTable(customersRes?.pagination ?? {})});
   }
 
   const onView = () => {
@@ -84,9 +88,7 @@ export default connector(({ customersRes, getCustomers,createCustomer,deleteCust
     },
   ];
 
-  const onChangeTable: TableProps<DataType>['onChange'] = (pagination,filters,sorter) => {
-    getCustomers({params:{page:pagination.current, pageSize: pagination.pageSize}});
-  };
+  
   
 
   return (
@@ -94,7 +96,7 @@ export default connector(({ customersRes, getCustomers,createCustomer,deleteCust
       <Button onClick={onCreate} type="primary" style={{ marginBottom: 16 }} icon={<PlusOutlined />}>
         Add
       </Button>
-      <Table columns={columns} dataSource={customersRes?.customers} rowKey={record => record.id} onChange={onChangeTable} pagination={customersRes?.pagination}/>
+      <Table columns={columns} dataSource={customersRes?.customers} rowKey={record => record.id} onChange={(a)=>onChangeTable(a)} pagination={customersRes?.pagination}/>
     </>
   );
 });
